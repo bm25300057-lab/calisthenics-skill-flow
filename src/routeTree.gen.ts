@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as OnboardingGoalsRouteImport } from './routes/onboarding.goals'
+import { Route as OnboardingLevelRouteImport } from './routes/onboarding.level'
+import { Route as OnboardingSkillsRouteImport } from './routes/onboarding.skills'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +37,39 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingGoalsRoute = OnboardingGoalsRouteImport.update({
+  id: '/onboarding/goals',
+  path: '/onboarding/goals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingLevelRoute = OnboardingLevelRouteImport.update({
+  id: '/onboarding/level',
+  path: '/onboarding/level',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingSkillsRoute = OnboardingSkillsRouteImport.update({
+  id: '/onboarding/skills',
+  path: '/onboarding/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
+  '/onboarding/goals': typeof OnboardingGoalsRoute
+  '/onboarding/level': typeof OnboardingLevelRoute
+  '/onboarding/skills': typeof OnboardingSkillsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
+  '/onboarding/goals': typeof OnboardingGoalsRoute
+  '/onboarding/level': typeof OnboardingLevelRoute
+  '/onboarding/skills': typeof OnboardingSkillsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +77,38 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
+  '/onboarding/goals': typeof OnboardingGoalsRoute
+  '/onboarding/level': typeof OnboardingLevelRoute
+  '/onboarding/skills': typeof OnboardingSkillsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/welcome'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/welcome'
+    | '/onboarding/goals'
+    | '/onboarding/level'
+    | '/onboarding/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/welcome'
-  id: '__root__' | '/' | '/login' | '/signup' | '/welcome'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/welcome'
+    | '/onboarding/goals'
+    | '/onboarding/level'
+    | '/onboarding/skills'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/welcome'
+    | '/onboarding/goals'
+    | '/onboarding/level'
+    | '/onboarding/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +116,9 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
   WelcomeRoute: typeof WelcomeRoute
+  OnboardingGoalsRoute: typeof OnboardingGoalsRoute
+  OnboardingLevelRoute: typeof OnboardingLevelRoute
+  OnboardingSkillsRoute: typeof OnboardingSkillsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +151,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding/goals': {
+      id: '/onboarding/goals'
+      path: '/onboarding/goals'
+      fullPath: '/onboarding/goals'
+      preLoaderRoute: typeof OnboardingGoalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/level': {
+      id: '/onboarding/level'
+      path: '/onboarding/level'
+      fullPath: '/onboarding/level'
+      preLoaderRoute: typeof OnboardingLevelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/skills': {
+      id: '/onboarding/skills'
+      path: '/onboarding/skills'
+      fullPath: '/onboarding/skills'
+      preLoaderRoute: typeof OnboardingSkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +180,9 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
   WelcomeRoute: WelcomeRoute,
+  OnboardingGoalsRoute: OnboardingGoalsRoute,
+  OnboardingLevelRoute: OnboardingLevelRoute,
+  OnboardingSkillsRoute: OnboardingSkillsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
