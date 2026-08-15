@@ -10,16 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as OnboardingGoalsRouteImport } from './routes/onboarding.goals'
 import { Route as OnboardingLevelRouteImport } from './routes/onboarding.level'
 import { Route as OnboardingSkillsRouteImport } from './routes/onboarding.skills'
+import { Route as SkillsIndexRouteImport } from './routes/skills.index'
+import { Route as SkillsSkillIdIndexRouteImport } from './routes/skills.$skillId.index'
+import { Route as SkillsSkillIdPathwayRouteImport } from './routes/skills.$skillId.pathway'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -52,73 +61,116 @@ const OnboardingSkillsRoute = OnboardingSkillsRouteImport.update({
   path: '/onboarding/skills',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsIndexRoute = SkillsIndexRouteImport.update({
+  id: '/skills/',
+  path: '/skills/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsSkillIdIndexRoute = SkillsSkillIdIndexRouteImport.update({
+  id: '/skills/$skillId/',
+  path: '/skills/$skillId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsSkillIdPathwayRoute = SkillsSkillIdPathwayRouteImport.update({
+  id: '/skills/$skillId/pathway',
+  path: '/skills/$skillId/pathway',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/level': typeof OnboardingLevelRoute
   '/onboarding/skills': typeof OnboardingSkillsRoute
+  '/skills/': typeof SkillsIndexRoute
+  '/skills/$skillId/pathway': typeof SkillsSkillIdPathwayRoute
+  '/skills/$skillId/': typeof SkillsSkillIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/level': typeof OnboardingLevelRoute
   '/onboarding/skills': typeof OnboardingSkillsRoute
+  '/skills': typeof SkillsIndexRoute
+  '/skills/$skillId/pathway': typeof SkillsSkillIdPathwayRoute
+  '/skills/$skillId': typeof SkillsSkillIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/level': typeof OnboardingLevelRoute
   '/onboarding/skills': typeof OnboardingSkillsRoute
+  '/skills/': typeof SkillsIndexRoute
+  '/skills/$skillId/pathway': typeof SkillsSkillIdPathwayRoute
+  '/skills/$skillId/': typeof SkillsSkillIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/home'
     | '/login'
     | '/signup'
     | '/welcome'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
+    | '/skills/'
+    | '/skills/$skillId/pathway'
+    | '/skills/$skillId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/home'
     | '/login'
     | '/signup'
     | '/welcome'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
+    | '/skills'
+    | '/skills/$skillId/pathway'
+    | '/skills/$skillId'
   id:
     | '__root__'
     | '/'
+    | '/home'
     | '/login'
     | '/signup'
     | '/welcome'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
+    | '/skills/'
+    | '/skills/$skillId/pathway'
+    | '/skills/$skillId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
   WelcomeRoute: typeof WelcomeRoute
   OnboardingGoalsRoute: typeof OnboardingGoalsRoute
   OnboardingLevelRoute: typeof OnboardingLevelRoute
   OnboardingSkillsRoute: typeof OnboardingSkillsRoute
+  SkillsIndexRoute: typeof SkillsIndexRoute
+  SkillsSkillIdPathwayRoute: typeof SkillsSkillIdPathwayRoute
+  SkillsSkillIdIndexRoute: typeof SkillsSkillIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -128,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -172,17 +231,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingSkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skills/': {
+      id: '/skills/'
+      path: '/skills'
+      fullPath: '/skills/'
+      preLoaderRoute: typeof SkillsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills/$skillId/': {
+      id: '/skills/$skillId/'
+      path: '/skills/$skillId'
+      fullPath: '/skills/$skillId/'
+      preLoaderRoute: typeof SkillsSkillIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills/$skillId/pathway': {
+      id: '/skills/$skillId/pathway'
+      path: '/skills/$skillId/pathway'
+      fullPath: '/skills/$skillId/pathway'
+      preLoaderRoute: typeof SkillsSkillIdPathwayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
   WelcomeRoute: WelcomeRoute,
   OnboardingGoalsRoute: OnboardingGoalsRoute,
   OnboardingLevelRoute: OnboardingLevelRoute,
   OnboardingSkillsRoute: OnboardingSkillsRoute,
+  SkillsIndexRoute: SkillsIndexRoute,
+  SkillsSkillIdPathwayRoute: SkillsSkillIdPathwayRoute,
+  SkillsSkillIdIndexRoute: SkillsSkillIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
