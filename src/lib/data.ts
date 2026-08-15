@@ -386,8 +386,8 @@ export const lessons: Record<string, Lesson> = {
 export const getLesson = (id: string): Lesson => {
   const found = lessons[id];
   if (found) return found;
-  const base = lessons["pull-up-step-5"];
-  const [skillId] = id.split("-step-");
+  const base = lessons["pull-up-step-5"] as Lesson;
+  const skillId = id.split("-step-")[0] ?? "";
   const skill = getSkill(skillId);
   const step = skill?.pathway.find((p) => p.id === id);
   return {
@@ -397,6 +397,6 @@ export const getLesson = (id: string): Lesson => {
     skillId: skill?.id ?? base.skillId,
     skillName: skill?.name ?? base.skillName,
     stepIndex: step?.index ?? base.stepIndex,
-    premium: step?.premium,
+    premium: step?.premium ?? false,
   };
 };
