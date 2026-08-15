@@ -10,10 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as LessonLessonIdRouteImport } from './routes/lesson.$lessonId'
 import { Route as OnboardingGoalsRouteImport } from './routes/onboarding.goals'
 import { Route as OnboardingLevelRouteImport } from './routes/onboarding.level'
 import { Route as OnboardingSkillsRouteImport } from './routes/onboarding.skills'
@@ -26,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AchievementsRoute = AchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -36,6 +45,16 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -44,6 +63,11 @@ const SignupRoute = SignupRouteImport.update({
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonLessonIdRoute = LessonLessonIdRouteImport.update({
+  id: '/lesson/$lessonId',
+  path: '/lesson/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingGoalsRoute = OnboardingGoalsRouteImport.update({
@@ -79,10 +103,14 @@ const SkillsSkillIdPathwayRoute = SkillsSkillIdPathwayRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
+  '/lesson/$lessonId': typeof LessonLessonIdRoute
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/level': typeof OnboardingLevelRoute
   '/onboarding/skills': typeof OnboardingSkillsRoute
@@ -92,10 +120,14 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
+  '/lesson/$lessonId': typeof LessonLessonIdRoute
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/level': typeof OnboardingLevelRoute
   '/onboarding/skills': typeof OnboardingSkillsRoute
@@ -106,10 +138,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/signup': typeof SignupRoute
   '/welcome': typeof WelcomeRoute
+  '/lesson/$lessonId': typeof LessonLessonIdRoute
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/level': typeof OnboardingLevelRoute
   '/onboarding/skills': typeof OnboardingSkillsRoute
@@ -121,10 +157,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/achievements'
     | '/home'
     | '/login'
+    | '/profile'
+    | '/progress'
     | '/signup'
     | '/welcome'
+    | '/lesson/$lessonId'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
@@ -134,10 +174,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/achievements'
     | '/home'
     | '/login'
+    | '/profile'
+    | '/progress'
     | '/signup'
     | '/welcome'
+    | '/lesson/$lessonId'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
@@ -147,10 +191,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/achievements'
     | '/home'
     | '/login'
+    | '/profile'
+    | '/progress'
     | '/signup'
     | '/welcome'
+    | '/lesson/$lessonId'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
@@ -161,10 +209,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AchievementsRoute: typeof AchievementsRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  ProgressRoute: typeof ProgressRoute
   SignupRoute: typeof SignupRoute
   WelcomeRoute: typeof WelcomeRoute
+  LessonLessonIdRoute: typeof LessonLessonIdRoute
   OnboardingGoalsRoute: typeof OnboardingGoalsRoute
   OnboardingLevelRoute: typeof OnboardingLevelRoute
   OnboardingSkillsRoute: typeof OnboardingSkillsRoute
@@ -182,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/achievements': {
+      id: '/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AchievementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/home': {
       id: '/home'
       path: '/home'
@@ -196,6 +255,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -208,6 +281,13 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lesson/$lessonId': {
+      id: '/lesson/$lessonId'
+      path: '/lesson/$lessonId'
+      fullPath: '/lesson/$lessonId'
+      preLoaderRoute: typeof LessonLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/goals': {
@@ -257,10 +337,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AchievementsRoute: AchievementsRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
+  ProgressRoute: ProgressRoute,
   SignupRoute: SignupRoute,
   WelcomeRoute: WelcomeRoute,
+  LessonLessonIdRoute: LessonLessonIdRoute,
   OnboardingGoalsRoute: OnboardingGoalsRoute,
   OnboardingLevelRoute: OnboardingLevelRoute,
   OnboardingSkillsRoute: OnboardingSkillsRoute,
