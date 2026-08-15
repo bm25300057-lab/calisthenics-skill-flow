@@ -1,24 +1,57 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Atlas — Learn Calisthenics Skills Step by Step" },
+      {
+        name: "description",
+        content:
+          "Premium calisthenics skill training. Structured pathways for the pull-up, handstand, muscle-up, front lever and planche.",
+      },
+      { property: "og:title", content: "Atlas — Learn Calisthenics Skills Step by Step" },
+      {
+        property: "og:description",
+        content: "Structured, coach-led calisthenics pathways from your first pull-up to the planche.",
+      },
+    ],
+  }),
+  component: Splash,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Splash() {
+  const navigate = useNavigate();
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const tick = setInterval(() => setProgress((p) => Math.min(100, p + 4)), 40);
+    const go = setTimeout(() => navigate({ to: "/welcome" }), 1400);
+    return () => {
+      clearInterval(tick);
+      clearTimeout(go);
+    };
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="grid min-h-screen place-items-center bg-gradient-hero px-6">
+      <div className="w-full max-w-xs text-center animate-rise">
+        <h1 className="text-display text-6xl font-bold">
+          Atlas<span className="text-primary">.</span>
+        </h1>
+        <p className="mt-2 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+          Calisthenics Skill School
+        </p>
+        <div className="mt-10 h-1 w-full overflow-hidden rounded-full bg-elevated">
+          <div
+            className="h-full rounded-full bg-gradient-primary transition-[width] duration-100"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <Link to="/welcome" className="mt-6 inline-block text-xs text-muted-foreground underline">
+          Skip
+        </Link>
+      </div>
     </div>
   );
 }
