@@ -4,7 +4,7 @@ import { AppShell, SectionTitle } from "@/components/app-shell";
 import { PremiumLock } from "@/components/premium-lock";
 import { getLesson, getSkill } from "@/lib/data";
 
-export const Route = createFileRoute("/lesson/$lessonId")({
+export const Route = createFileRoute("/_authenticated/lesson/$lessonId")({
   loader: ({ params }) => ({ lesson: getLesson(params.lessonId) }),
   head: ({ loaderData }) => {
     if (!loaderData) {

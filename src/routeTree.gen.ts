@@ -10,43 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AchievementsRouteImport } from './routes/achievements'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PersonalTrainingRouteImport } from './routes/personal-training'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as ProgressRouteImport } from './routes/progress'
-import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as WelcomeRouteImport } from './routes/welcome'
-import { Route as LessonLessonIdRouteImport } from './routes/lesson.$lessonId'
-import { Route as OnboardingGoalsRouteImport } from './routes/onboarding.goals'
-import { Route as OnboardingLevelRouteImport } from './routes/onboarding.level'
-import { Route as OnboardingSkillsRouteImport } from './routes/onboarding.skills'
+import { Route as AuthenticatedAchievementsRouteImport } from './routes/_authenticated/achievements'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated/progress'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as SkillsIndexRouteImport } from './routes/skills.index'
+import { Route as AuthenticatedLessonLessonIdRouteImport } from './routes/_authenticated/lesson.$lessonId'
+import { Route as AuthenticatedOnboardingGoalsRouteImport } from './routes/_authenticated/onboarding.goals'
+import { Route as AuthenticatedOnboardingLevelRouteImport } from './routes/_authenticated/onboarding.level'
+import { Route as AuthenticatedOnboardingSkillsRouteImport } from './routes/_authenticated/onboarding.skills'
 import { Route as SkillsSkillIdIndexRouteImport } from './routes/skills.$skillId.index'
 import { Route as SkillsSkillIdPathwayRouteImport } from './routes/skills.$skillId.pathway'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AchievementsRoute = AchievementsRouteImport.update({
-  id: '/achievements',
-  path: '/achievements',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -57,21 +42,6 @@ const LoginRoute = LoginRouteImport.update({
 const PersonalTrainingRoute = PersonalTrainingRouteImport.update({
   id: '/personal-training',
   path: '/personal-training',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProgressRoute = ProgressRouteImport.update({
-  id: '/progress',
-  path: '/progress',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
@@ -89,24 +59,35 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LessonLessonIdRoute = LessonLessonIdRouteImport.update({
-  id: '/lesson/$lessonId',
-  path: '/lesson/$lessonId',
+const AuthenticatedAchievementsRoute =
+  AuthenticatedAchievementsRouteImport.update({
+    id: '/_authenticated/achievements',
+    path: '/achievements',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/_authenticated/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OnboardingGoalsRoute = OnboardingGoalsRouteImport.update({
-  id: '/onboarding/goals',
-  path: '/onboarding/goals',
+const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
+  id: '/_authenticated/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OnboardingLevelRoute = OnboardingLevelRouteImport.update({
-  id: '/onboarding/level',
-  path: '/onboarding/level',
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/_authenticated/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OnboardingSkillsRoute = OnboardingSkillsRouteImport.update({
-  id: '/onboarding/skills',
-  path: '/onboarding/skills',
+const AuthenticatedProgressRoute = AuthenticatedProgressRouteImport.update({
+  id: '/_authenticated/progress',
+  path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/_authenticated/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SkillsIndexRoute = SkillsIndexRouteImport.update({
@@ -114,6 +95,30 @@ const SkillsIndexRoute = SkillsIndexRouteImport.update({
   path: '/skills/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedLessonLessonIdRoute =
+  AuthenticatedLessonLessonIdRouteImport.update({
+    id: '/_authenticated/lesson/$lessonId',
+    path: '/lesson/$lessonId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedOnboardingGoalsRoute =
+  AuthenticatedOnboardingGoalsRouteImport.update({
+    id: '/_authenticated/onboarding/goals',
+    path: '/onboarding/goals',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedOnboardingLevelRoute =
+  AuthenticatedOnboardingLevelRouteImport.update({
+    id: '/_authenticated/onboarding/level',
+    path: '/onboarding/level',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedOnboardingSkillsRoute =
+  AuthenticatedOnboardingSkillsRouteImport.update({
+    id: '/_authenticated/onboarding/skills',
+    path: '/onboarding/skills',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const SkillsSkillIdIndexRoute = SkillsSkillIdIndexRouteImport.update({
   id: '/skills/$skillId/',
   path: '/skills/$skillId/',
@@ -127,65 +132,65 @@ const SkillsSkillIdPathwayRoute = SkillsSkillIdPathwayRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/achievements': typeof AchievementsRoute
-  '/admin': typeof AdminRoute
-  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/personal-training': typeof PersonalTrainingRoute
-  '/profile': typeof ProfileRoute
-  '/progress': typeof ProgressRoute
-  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/subscription': typeof SubscriptionRoute
   '/welcome': typeof WelcomeRoute
-  '/lesson/$lessonId': typeof LessonLessonIdRoute
-  '/onboarding/goals': typeof OnboardingGoalsRoute
-  '/onboarding/level': typeof OnboardingLevelRoute
-  '/onboarding/skills': typeof OnboardingSkillsRoute
+  '/achievements': typeof AuthenticatedAchievementsRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/home': typeof AuthenticatedHomeRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/progress': typeof AuthenticatedProgressRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/skills/': typeof SkillsIndexRoute
+  '/lesson/$lessonId': typeof AuthenticatedLessonLessonIdRoute
+  '/onboarding/goals': typeof AuthenticatedOnboardingGoalsRoute
+  '/onboarding/level': typeof AuthenticatedOnboardingLevelRoute
+  '/onboarding/skills': typeof AuthenticatedOnboardingSkillsRoute
   '/skills/$skillId/pathway': typeof SkillsSkillIdPathwayRoute
   '/skills/$skillId/': typeof SkillsSkillIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/achievements': typeof AchievementsRoute
-  '/admin': typeof AdminRoute
-  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/personal-training': typeof PersonalTrainingRoute
-  '/profile': typeof ProfileRoute
-  '/progress': typeof ProgressRoute
-  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/subscription': typeof SubscriptionRoute
   '/welcome': typeof WelcomeRoute
-  '/lesson/$lessonId': typeof LessonLessonIdRoute
-  '/onboarding/goals': typeof OnboardingGoalsRoute
-  '/onboarding/level': typeof OnboardingLevelRoute
-  '/onboarding/skills': typeof OnboardingSkillsRoute
+  '/achievements': typeof AuthenticatedAchievementsRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/home': typeof AuthenticatedHomeRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/progress': typeof AuthenticatedProgressRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/skills': typeof SkillsIndexRoute
+  '/lesson/$lessonId': typeof AuthenticatedLessonLessonIdRoute
+  '/onboarding/goals': typeof AuthenticatedOnboardingGoalsRoute
+  '/onboarding/level': typeof AuthenticatedOnboardingLevelRoute
+  '/onboarding/skills': typeof AuthenticatedOnboardingSkillsRoute
   '/skills/$skillId/pathway': typeof SkillsSkillIdPathwayRoute
   '/skills/$skillId': typeof SkillsSkillIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/achievements': typeof AchievementsRoute
-  '/admin': typeof AdminRoute
-  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/personal-training': typeof PersonalTrainingRoute
-  '/profile': typeof ProfileRoute
-  '/progress': typeof ProgressRoute
-  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/subscription': typeof SubscriptionRoute
   '/welcome': typeof WelcomeRoute
-  '/lesson/$lessonId': typeof LessonLessonIdRoute
-  '/onboarding/goals': typeof OnboardingGoalsRoute
-  '/onboarding/level': typeof OnboardingLevelRoute
-  '/onboarding/skills': typeof OnboardingSkillsRoute
+  '/_authenticated/achievements': typeof AuthenticatedAchievementsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/progress': typeof AuthenticatedProgressRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/skills/': typeof SkillsIndexRoute
+  '/_authenticated/lesson/$lessonId': typeof AuthenticatedLessonLessonIdRoute
+  '/_authenticated/onboarding/goals': typeof AuthenticatedOnboardingGoalsRoute
+  '/_authenticated/onboarding/level': typeof AuthenticatedOnboardingLevelRoute
+  '/_authenticated/onboarding/skills': typeof AuthenticatedOnboardingSkillsRoute
   '/skills/$skillId/pathway': typeof SkillsSkillIdPathwayRoute
   '/skills/$skillId/': typeof SkillsSkillIdIndexRoute
 }
@@ -193,86 +198,86 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/achievements'
-    | '/admin'
-    | '/home'
     | '/login'
     | '/personal-training'
-    | '/profile'
-    | '/progress'
-    | '/settings'
     | '/signup'
     | '/subscription'
     | '/welcome'
+    | '/achievements'
+    | '/admin'
+    | '/home'
+    | '/profile'
+    | '/progress'
+    | '/settings'
+    | '/skills/'
     | '/lesson/$lessonId'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
-    | '/skills/'
     | '/skills/$skillId/pathway'
     | '/skills/$skillId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/achievements'
-    | '/admin'
-    | '/home'
     | '/login'
     | '/personal-training'
-    | '/profile'
-    | '/progress'
-    | '/settings'
     | '/signup'
     | '/subscription'
     | '/welcome'
+    | '/achievements'
+    | '/admin'
+    | '/home'
+    | '/profile'
+    | '/progress'
+    | '/settings'
+    | '/skills'
     | '/lesson/$lessonId'
     | '/onboarding/goals'
     | '/onboarding/level'
     | '/onboarding/skills'
-    | '/skills'
     | '/skills/$skillId/pathway'
     | '/skills/$skillId'
   id:
     | '__root__'
     | '/'
-    | '/achievements'
-    | '/admin'
-    | '/home'
     | '/login'
     | '/personal-training'
-    | '/profile'
-    | '/progress'
-    | '/settings'
     | '/signup'
     | '/subscription'
     | '/welcome'
-    | '/lesson/$lessonId'
-    | '/onboarding/goals'
-    | '/onboarding/level'
-    | '/onboarding/skills'
+    | '/_authenticated/achievements'
+    | '/_authenticated/admin'
+    | '/_authenticated/home'
+    | '/_authenticated/profile'
+    | '/_authenticated/progress'
+    | '/_authenticated/settings'
     | '/skills/'
+    | '/_authenticated/lesson/$lessonId'
+    | '/_authenticated/onboarding/goals'
+    | '/_authenticated/onboarding/level'
+    | '/_authenticated/onboarding/skills'
     | '/skills/$skillId/pathway'
     | '/skills/$skillId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AchievementsRoute: typeof AchievementsRoute
-  AdminRoute: typeof AdminRoute
-  HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   PersonalTrainingRoute: typeof PersonalTrainingRoute
-  ProfileRoute: typeof ProfileRoute
-  ProgressRoute: typeof ProgressRoute
-  SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   SubscriptionRoute: typeof SubscriptionRoute
   WelcomeRoute: typeof WelcomeRoute
-  LessonLessonIdRoute: typeof LessonLessonIdRoute
-  OnboardingGoalsRoute: typeof OnboardingGoalsRoute
-  OnboardingLevelRoute: typeof OnboardingLevelRoute
-  OnboardingSkillsRoute: typeof OnboardingSkillsRoute
+  AuthenticatedAchievementsRoute: typeof AuthenticatedAchievementsRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   SkillsIndexRoute: typeof SkillsIndexRoute
+  AuthenticatedLessonLessonIdRoute: typeof AuthenticatedLessonLessonIdRoute
+  AuthenticatedOnboardingGoalsRoute: typeof AuthenticatedOnboardingGoalsRoute
+  AuthenticatedOnboardingLevelRoute: typeof AuthenticatedOnboardingLevelRoute
+  AuthenticatedOnboardingSkillsRoute: typeof AuthenticatedOnboardingSkillsRoute
   SkillsSkillIdPathwayRoute: typeof SkillsSkillIdPathwayRoute
   SkillsSkillIdIndexRoute: typeof SkillsSkillIdIndexRoute
 }
@@ -284,27 +289,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/achievements': {
-      id: '/achievements'
-      path: '/achievements'
-      fullPath: '/achievements'
-      preLoaderRoute: typeof AchievementsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -319,27 +303,6 @@ declare module '@tanstack/react-router' {
       path: '/personal-training'
       fullPath: '/personal-training'
       preLoaderRoute: typeof PersonalTrainingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/progress': {
-      id: '/progress'
-      path: '/progress'
-      fullPath: '/progress'
-      preLoaderRoute: typeof ProgressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -363,32 +326,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lesson/$lessonId': {
-      id: '/lesson/$lessonId'
-      path: '/lesson/$lessonId'
-      fullPath: '/lesson/$lessonId'
-      preLoaderRoute: typeof LessonLessonIdRouteImport
+    '/_authenticated/achievements': {
+      id: '/_authenticated/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AuthenticatedAchievementsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/onboarding/goals': {
-      id: '/onboarding/goals'
-      path: '/onboarding/goals'
-      fullPath: '/onboarding/goals'
-      preLoaderRoute: typeof OnboardingGoalsRouteImport
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/onboarding/level': {
-      id: '/onboarding/level'
-      path: '/onboarding/level'
-      fullPath: '/onboarding/level'
-      preLoaderRoute: typeof OnboardingLevelRouteImport
+    '/_authenticated/home': {
+      id: '/_authenticated/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/onboarding/skills': {
-      id: '/onboarding/skills'
-      path: '/onboarding/skills'
-      fullPath: '/onboarding/skills'
-      preLoaderRoute: typeof OnboardingSkillsRouteImport
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/progress': {
+      id: '/_authenticated/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof AuthenticatedProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/skills/': {
@@ -396,6 +373,34 @@ declare module '@tanstack/react-router' {
       path: '/skills'
       fullPath: '/skills/'
       preLoaderRoute: typeof SkillsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/lesson/$lessonId': {
+      id: '/_authenticated/lesson/$lessonId'
+      path: '/lesson/$lessonId'
+      fullPath: '/lesson/$lessonId'
+      preLoaderRoute: typeof AuthenticatedLessonLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/onboarding/goals': {
+      id: '/_authenticated/onboarding/goals'
+      path: '/onboarding/goals'
+      fullPath: '/onboarding/goals'
+      preLoaderRoute: typeof AuthenticatedOnboardingGoalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/onboarding/level': {
+      id: '/_authenticated/onboarding/level'
+      path: '/onboarding/level'
+      fullPath: '/onboarding/level'
+      preLoaderRoute: typeof AuthenticatedOnboardingLevelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/onboarding/skills': {
+      id: '/_authenticated/onboarding/skills'
+      path: '/onboarding/skills'
+      fullPath: '/onboarding/skills'
+      preLoaderRoute: typeof AuthenticatedOnboardingSkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/skills/$skillId/': {
@@ -417,22 +422,22 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AchievementsRoute: AchievementsRoute,
-  AdminRoute: AdminRoute,
-  HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   PersonalTrainingRoute: PersonalTrainingRoute,
-  ProfileRoute: ProfileRoute,
-  ProgressRoute: ProgressRoute,
-  SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   SubscriptionRoute: SubscriptionRoute,
   WelcomeRoute: WelcomeRoute,
-  LessonLessonIdRoute: LessonLessonIdRoute,
-  OnboardingGoalsRoute: OnboardingGoalsRoute,
-  OnboardingLevelRoute: OnboardingLevelRoute,
-  OnboardingSkillsRoute: OnboardingSkillsRoute,
+  AuthenticatedAchievementsRoute: AuthenticatedAchievementsRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedProgressRoute: AuthenticatedProgressRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   SkillsIndexRoute: SkillsIndexRoute,
+  AuthenticatedLessonLessonIdRoute: AuthenticatedLessonLessonIdRoute,
+  AuthenticatedOnboardingGoalsRoute: AuthenticatedOnboardingGoalsRoute,
+  AuthenticatedOnboardingLevelRoute: AuthenticatedOnboardingLevelRoute,
+  AuthenticatedOnboardingSkillsRoute: AuthenticatedOnboardingSkillsRoute,
   SkillsSkillIdPathwayRoute: SkillsSkillIdPathwayRoute,
   SkillsSkillIdIndexRoute: SkillsSkillIdIndexRoute,
 }

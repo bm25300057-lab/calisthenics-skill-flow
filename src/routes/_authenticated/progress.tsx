@@ -4,7 +4,7 @@ import { ProgressBar, ProgressRing } from "@/components/progress-bar";
 import { achievements, recentLessons, skills } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/progress")({
+export const Route = createFileRoute("/_authenticated/progress")({
   head: () => ({
     meta: [
       { title: "Your Progress — Atlas Calisthenics" },

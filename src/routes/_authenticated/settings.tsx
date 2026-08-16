@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { AppShell, PageHeader, SectionTitle } from "@/components/app-shell";
 import { Switch } from "@/components/ui/switch";
 
-export const Route = createFileRoute("/settings")({
+export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
       { title: "Settings — Atlas Calisthenics" },

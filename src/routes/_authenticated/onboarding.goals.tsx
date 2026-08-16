@@ -3,7 +3,7 @@ import { useState } from "react";
 import { OnboardingCTA, OnboardingLayout, SelectTile } from "@/components/onboarding-layout";
 import { goals } from "@/lib/data";
 
-export const Route = createFileRoute("/onboarding/goals")({
+export const Route = createFileRoute("/_authenticated/onboarding/goals")({
   head: () => ({
     meta: [
       { title: "Choose Your Goal — Atlas Calisthenics" },

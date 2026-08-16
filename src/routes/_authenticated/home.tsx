@@ -5,7 +5,7 @@ import { ProgressBar, ProgressRing } from "@/components/progress-bar";
 import { PersonalTrainingCTA } from "@/components/personal-training-cta";
 import { recentLessons, skills } from "@/lib/data";
 
-export const Route = createFileRoute("/home")({
+export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
     meta: [
       { title: "Your Training Home — Atlas Calisthenics" },

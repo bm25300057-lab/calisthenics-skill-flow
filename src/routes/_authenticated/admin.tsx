@@ -15,7 +15,7 @@ import { personalTrainingConfig as cfg } from "@/config/personal-training";
 import { skills } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
       { title: "Admin Dashboard — Atlas Calisthenics" },

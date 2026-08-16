@@ -3,7 +3,7 @@ import { useState } from "react";
 import { OnboardingCTA, OnboardingLayout, SelectTile } from "@/components/onboarding-layout";
 import { levels } from "@/lib/data";
 
-export const Route = createFileRoute("/onboarding/level")({
+export const Route = createFileRoute("/_authenticated/onboarding/level")({
   head: () => ({
     meta: [
       { title: "Your Current Level — Atlas Calisthenics" },
