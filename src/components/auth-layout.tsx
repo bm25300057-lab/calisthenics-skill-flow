@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import type { ReactNode } from "react";
+import type { InputHTMLAttributes, ReactNode } from "react";
 
 export function AuthLayout({
   title,
@@ -33,21 +33,15 @@ export function AuthLayout({
 
 export function Field({
   label,
-  type = "text",
-  placeholder,
-}: {
-  label: string;
-  type?: string;
-  placeholder: string;
-}) {
+  ...props
+}: { label: string } & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="block">
       <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
         {label}
       </span>
       <input
-        type={type}
-        placeholder={placeholder}
+        {...props}
         className="mt-2 h-13 w-full rounded-xl border border-input bg-surface px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
       />
     </label>
