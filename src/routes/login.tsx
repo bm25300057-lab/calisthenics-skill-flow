@@ -1,5 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AuthLayout, Field } from "@/components/auth-layout";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -14,6 +16,31 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) void navigate({ to: "/home", replace: true });
+    });
+  }, [navigate]);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    setBusy(false);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    void navigate({ to: "/home", replace: true });
+  };
+
   return (
     <AuthLayout
       title="Welcome back"
@@ -27,20 +54,32 @@ function LoginPage() {
         </span>
       }
     >
-      <Field label="Email" type="email" placeholder="you@example.com" />
-      <Field label="Password" type="password" placeholder="••••••••" />
-      <div className="flex justify-end">
-        <span className="text-xs text-muted-foreground">Forgot password?</span>
-      </div>
-      <Link
-        to="/home"
-        className="flex min-h-13 items-center justify-center rounded-xl bg-gradient-primary text-sm font-bold text-primary-foreground shadow-glow"
-      >
-        Sign in
-      </Link>
-      <p className="text-center text-[11px] text-muted-foreground">
-        Authentication is not wired up yet — this screen is UI only.
-      </p>
+      <form onSubmit={onSubmit} className="space-y-4">
+        <Field
+          label="Email"
+          type="email"
+          required
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Field
+          label="Password"
+          type="password"
+          required
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error ? <p className="text-xs font-semibold text-destructive">{error}</p> : null}
+        <button
+          type="submit"
+          disabled={busy}
+          className="flex min-h-13 w-full items-center justify-center rounded-xl bg-gradient-primary text-sm font-bold text-primary-foreground shadow-glow disabled:opacity-60"
+        >
+          {busy ? "Signing in…" : "Sign in"}
+        </button>
+      </form>
     </AuthLayout>
   );
 }
