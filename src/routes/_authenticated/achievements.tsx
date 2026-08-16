@@ -4,7 +4,7 @@ import { AppShell, PageHeader } from "@/components/app-shell";
 import { achievements } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/achievements")({
+export const Route = createFileRoute("/_authenticated/achievements")({
   head: () => ({
     meta: [
       { title: "Achievements — Atlas Calisthenics" },

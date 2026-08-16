@@ -4,7 +4,7 @@ import { AppShell, PageHeader, SectionTitle } from "@/components/app-shell";
 import { PersonalTrainingCTA } from "@/components/personal-training-cta";
 import { PremiumBadge } from "@/components/premium-lock";
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
       { title: "Your Profile — Atlas Calisthenics" },

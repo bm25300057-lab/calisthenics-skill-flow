@@ -3,7 +3,7 @@ import { useState } from "react";
 import { OnboardingCTA, OnboardingLayout, SelectTile } from "@/components/onboarding-layout";
 import { skills } from "@/lib/data";
 
-export const Route = createFileRoute("/onboarding/skills")({
+export const Route = createFileRoute("/_authenticated/onboarding/skills")({
   head: () => ({
     meta: [
       { title: "Pick Your First Skill — Atlas Calisthenics" },
