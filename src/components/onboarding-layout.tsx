@@ -86,27 +86,26 @@ export function SelectTile({
 }
 
 export function OnboardingCTA({
-  to,
+  onClick,
   disabled,
   children,
 }: {
-  to: "/onboarding/level" | "/onboarding/skills" | "/home";
+  onClick: () => void;
   disabled?: boolean;
   children: ReactNode;
 }) {
-  if (disabled) {
-    return (
-      <span className="flex min-h-13 w-full items-center justify-center rounded-xl bg-elevated text-sm font-bold text-muted-foreground">
-        {children}
-      </span>
-    );
-  }
   return (
-    <Link
-      to={to}
-      className="flex min-h-13 w-full items-center justify-center rounded-xl bg-gradient-primary text-sm font-bold text-primary-foreground shadow-glow"
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        "flex min-h-13 w-full items-center justify-center rounded-xl text-sm font-bold",
+        disabled
+          ? "bg-elevated text-muted-foreground"
+          : "bg-gradient-primary text-primary-foreground shadow-glow",
+      )}
     >
       {children}
-    </Link>
+    </button>
   );
 }
