@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { OnboardingCTA, OnboardingLayout, SelectTile } from "@/components/onboarding-layout";
 import { goals } from "@/lib/data";
@@ -16,9 +16,17 @@ export const Route = createFileRoute("/_authenticated/onboarding/goals")({
 });
 
 function GoalsPage() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>([]);
   const toggle = (id: string) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]));
+
+  const next = () => {
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("atlas-onboarding-goals", JSON.stringify(selected));
+    }
+    void navigate({ to: "/onboarding/level" });
+  };
 
   return (
     <OnboardingLayout
@@ -27,7 +35,7 @@ function GoalsPage() {
       title="What are you training for?"
       subtitle="Pick one or more. You can change this any time."
       cta={
-        <OnboardingCTA to="/onboarding/level" disabled={selected.length === 0}>
+        <OnboardingCTA onClick={next} disabled={selected.length === 0}>
           {selected.length === 0 ? "Select a goal" : "Continue"}
         </OnboardingCTA>
       }

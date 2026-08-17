@@ -1,10 +1,21 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, Lock } from "lucide-react";
-import type { Skill } from "@/lib/data";
 import { ProgressBar } from "@/components/progress-bar";
 import { PremiumBadge } from "@/components/premium-lock";
 
-export function SkillCard({ skill }: { skill: Skill }) {
+export function SkillCard({
+  skill,
+}: {
+  skill: {
+    id: string;
+    name: string;
+    difficulty: string;
+    steps: number;
+    estimatedWeeks: number;
+    progress: number;
+    premium?: boolean;
+  };
+}) {
   return (
     <Link
       to="/skills/$skillId"

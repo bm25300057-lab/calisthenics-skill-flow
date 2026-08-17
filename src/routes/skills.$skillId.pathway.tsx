@@ -1,9 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Check, Lock, Play } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { ProgressBar } from "@/components/progress-bar";
 import { PersonalTrainingCTA } from "@/components/personal-training-cta";
-import { getSkill, type PathwayStep } from "@/lib/data";
+import { getSkill } from "@/lib/data";
+import { programQuery, useSkillProgress } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/skills/$skillId/pathway")({
@@ -32,12 +34,19 @@ export const Route = createFileRoute("/skills/$skillId/pathway")({
 
 function PathwayPage() {
   const { skill } = Route.useLoaderData();
+  const { skillId } = Route.useParams();
+  const { data: program } = useQuery(programQuery(skillId));
+  const { completed, progressFor } = useSkillProgress();
+  const progress = progressFor(skillId);
+
+  const lessons = program?.lessons ?? [];
+  const nextId = progress.next?.id;
 
   return (
     <AppShell>
       <Link
         to="/skills/$skillId"
-        params={{ skillId: skill.id }}
+        params={{ skillId }}
         className="mb-4 inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground"
       >
         <ArrowLeft className="size-4" /> {skill.name}
@@ -45,14 +54,34 @@ function PathwayPage() {
 
       <h1 className="text-display text-4xl font-bold">{skill.name} Program</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        {skill.steps} steps · ~{skill.estimatedWeeks} weeks
+        {progress.total} steps · ~{skill.estimatedWeeks} weeks
       </p>
-      <ProgressBar value={skill.progress} className="mt-4" showLabel />
+      <ProgressBar value={progress.percent} className="mt-4" showLabel />
 
       <ol className="relative mt-8 space-y-3 border-l border-border pl-6">
-        {skill.pathway.map((step) => (
-          <StepRow key={step.id} step={step} />
-        ))}
+        {lessons.map((lesson) => {
+          const state: "completed" | "current" | "locked" = completed.has(lesson.id)
+            ? "completed"
+            : lesson.id === nextId
+              ? "current"
+              : "locked";
+          return (
+            <StepRow
+              key={lesson.id}
+              id={lesson.id}
+              index={lesson.order}
+              title={lesson.title}
+              summary={lesson.description ?? "Technique focus, prescribed volume and quality standards."}
+              state={state}
+              premium={!lesson.is_free}
+            />
+          );
+        })}
+        {lessons.length === 0 ? (
+          <li className="text-sm text-muted-foreground">
+            Premium steps in this pathway unlock with a subscription.
+          </li>
+        ) : null}
       </ol>
 
       <PersonalTrainingCTA variant="inline" className="mt-8" />
@@ -60,63 +89,60 @@ function PathwayPage() {
   );
 }
 
-function StepRow({ step }: { step: PathwayStep }) {
-  const locked = step.state === "locked";
+function StepRow({
+  id,
+  index,
+  title,
+  summary,
+  state,
+  premium,
+}: {
+  id: string;
+  index: number;
+  title: string;
+  summary: string;
+  state: "completed" | "current" | "locked";
+  premium: boolean;
+}) {
   const icon =
-    step.state === "completed" ? (
+    state === "completed" ? (
       <Check className="size-3.5" />
-    ) : locked ? (
+    ) : state === "locked" ? (
       <Lock className="size-3.5" />
     ) : (
       <Play className="size-3 fill-current" />
     );
 
-  const marker = (
-    <span
-      className={cn(
-        "absolute -left-[31px] grid size-6 place-items-center rounded-full border-2 border-background",
-        step.state === "completed" && "bg-success text-success-foreground",
-        step.state === "current" && "bg-primary text-primary-foreground shadow-glow",
-        locked && "bg-locked text-background",
-      )}
-    >
-      {icon}
-    </span>
-  );
-
-  const body = (
-    <>
-      {marker}
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            Step {step.index}
-            {step.state === "current" ? " · Current" : locked ? " · Locked" : " · Completed"}
-          </p>
-          <h3 className="text-display mt-0.5 text-lg font-bold">{step.title}</h3>
-          <p className="mt-1 text-xs text-muted-foreground">{step.summary}</p>
-        </div>
-      </div>
-    </>
-  );
-
-  const base = cn(
-    "relative block rounded-2xl border p-4 transition-colors",
-    step.state === "current"
-      ? "border-primary/60 bg-primary/5"
-      : "border-border bg-surface",
-    locked && "opacity-60",
-  );
-
   return (
     <li>
-      {locked ? (
-        <div className={base}>{body}</div>
-      ) : (
-        <Link to="/lesson/$lessonId" params={{ lessonId: step.id }} className={base}>
-          {body}
-        </Link>
-      )}
+      <Link
+        to="/lesson/$lessonId"
+        params={{ lessonId: id }}
+        className={cn(
+          "relative block rounded-2xl border p-4 transition-colors",
+          state === "current"
+            ? "border-primary bg-primary/5"
+            : "border-border bg-surface hover:border-muted-foreground/40",
+        )}
+      >
+        <span
+          className={cn(
+            "absolute -left-[31px] grid size-6 place-items-center rounded-full border-2 border-background",
+            state === "completed" && "bg-success text-success-foreground",
+            state === "current" && "bg-primary text-primary-foreground shadow-glow",
+            state === "locked" && "bg-locked text-background",
+          )}
+        >
+          {icon}
+        </span>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+          Step {index}
+          {state === "current" ? " · Current" : state === "completed" ? " · Completed" : ""}
+          {premium ? " · Premium" : ""}
+        </p>
+        <h3 className="text-display mt-0.5 text-lg font-bold">{title}</h3>
+        <p className="mt-1 text-xs text-muted-foreground">{summary}</p>
+      </Link>
     </li>
   );
 }

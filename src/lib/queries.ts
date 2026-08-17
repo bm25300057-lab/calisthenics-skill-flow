@@ -164,10 +164,62 @@ export const achievementsQuery = queryOptions({
   },
 });
 
+export const allLessonsQuery = queryOptions({
+  queryKey: ["all-lessons"],
+  queryFn: async () => {
+    const { data, error } = await supabase
+      .from("lessons")
+      .select("id,title,order,is_free,program_id, programs(skill_id, skills(id,name))")
+      .order("order", { ascending: true });
+    if (error) throw error;
+    return (data ?? []).map((l) => ({
+      id: l.id,
+      title: l.title,
+      order: l.order,
+      is_free: l.is_free,
+      skillId: l.programs?.skill_id ?? "",
+      skillName: l.programs?.skills?.name ?? "",
+    }));
+  },
+});
+
+export type FlatLesson = {
+  id: string;
+  title: string;
+  order: number;
+  is_free: boolean;
+  skillId: string;
+  skillName: string;
+};
+
+/** Progress per skill, using the static step count as the denominator. */
+export function useSkillProgress() {
+  const { data: lessons = [] } = useQuery(allLessonsQuery);
+  const completed = useCompletedLessonIds();
+
+  const bySkill = new Map<string, FlatLesson[]>();
+  for (const l of lessons) {
+    const list = bySkill.get(l.skillId) ?? [];
+    list.push(l);
+    bySkill.set(l.skillId, list);
+  }
+
+  const progressFor = (skillId: string) => {
+    const list = (bySkill.get(skillId) ?? []).slice().sort((a, b) => a.order - b.order);
+    const total = skillMeta(skillId).steps || list.length || 1;
+    const done = list.filter((l) => completed.has(l.id)).length;
+    const next = list.find((l) => !completed.has(l.id)) ?? null;
+    return { total, done, next, percent: Math.round((done / total) * 100) };
+  };
+
+  return { lessons, completed, bySkill, progressFor };
+}
+
 export function useCompletedLessonIds() {
   const { data } = useQuery(progressQuery);
   return new Set((data ?? []).map((p) => p.lesson_id));
 }
+
 
 export function useToggleLessonComplete() {
   const qc = useQueryClient();
