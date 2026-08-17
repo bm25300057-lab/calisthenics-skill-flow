@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { AppShell, PageHeader } from "@/components/app-shell";
 import { SkillCard } from "@/components/skill-card";
 import { PersonalTrainingCTA } from "@/components/personal-training-cta";
-import { categories, skills, type SkillCategory } from "@/lib/data";
+import { categories, getSkill, type SkillCategory } from "@/lib/data";
+import { skillMeta, skillsQuery, useSkillProgress } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/skills/")({
@@ -24,6 +26,9 @@ export const Route = createFileRoute("/skills/")({
 
 function SkillLibrary() {
   const [tab, setTab] = useState<SkillCategory | "All">("All");
+  const { data: skills = [], isLoading } = useQuery(skillsQuery);
+  const { progressFor } = useSkillProgress();
+
   const visible = tab === "All" ? skills : skills.filter((s) => s.category === tab);
 
   return (
@@ -47,11 +52,26 @@ function SkillLibrary() {
         ))}
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2">
-        {visible.map((s) => (
-          <SkillCard key={s.id} skill={s} />
-        ))}
-      </div>
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Loading skills…</p>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2">
+          {visible.map((s) => (
+            <SkillCard
+              key={s.id}
+              skill={{
+                id: s.id,
+                name: s.name,
+                difficulty: s.difficulty,
+                steps: skillMeta(s.id).steps,
+                estimatedWeeks: skillMeta(s.id).estimatedWeeks,
+                progress: progressFor(s.id).percent,
+                premium: getSkill(s.id)?.premium ?? false,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <PersonalTrainingCTA variant="inline" className="mt-8" />
     </AppShell>
