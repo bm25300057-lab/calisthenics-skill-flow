@@ -19,12 +19,16 @@ export const Route = createFileRoute("/_authenticated/admin")({
   beforeLoad: async () => {
     const { supabase } = await import("@/integrations/supabase/client");
     const { data: auth } = await supabase.auth.getUser();
-    const { data: isAdmin } = await supabase.rpc("has_role", {
-      _user_id: auth.user?.id ?? "",
-      _role: "admin",
-    });
+    if (!auth.user) throw redirect({ to: "/login" });
+    const { data: isAdmin } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", auth.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
     if (!isAdmin) throw redirect({ to: "/home" });
   },
+
   head: () => ({
     meta: [
       { title: "Admin Dashboard — Atlas Calisthenics" },
