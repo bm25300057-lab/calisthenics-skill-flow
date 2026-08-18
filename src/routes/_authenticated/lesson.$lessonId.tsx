@@ -1,66 +1,83 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, ArrowLeft, ArrowRight, Check, Play, ShieldCheck } from "lucide-react";
 import { AppShell, SectionTitle } from "@/components/app-shell";
 import { PremiumLock } from "@/components/premium-lock";
-import { getLesson, getSkill } from "@/lib/data";
+import { getLesson } from "@/lib/data";
+import { lessonQuery, useSkillProgress, useToggleLessonComplete } from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/lesson/$lessonId")({
-  loader: ({ params }) => ({ lesson: getLesson(params.lessonId) }),
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return { meta: [{ title: "Lesson unavailable — Atlas" }, { name: "robots", content: "noindex" }] };
-    }
-    const { lesson } = loaderData;
-    return {
-      meta: [
-        { title: `${lesson.title} — ${lesson.skillName} Lesson | Atlas` },
-        { name: "description", content: lesson.objective },
-        { property: "og:title", content: `${lesson.title} — ${lesson.skillName} Lesson` },
-        { property: "og:description", content: lesson.objective },
-      ],
-    };
-  },
+  head: () => ({
+    meta: [
+      { title: "Lesson — Atlas Calisthenics" },
+      { name: "description", content: "Video lesson, technique breakdown and the standard to hit before progressing." },
+      { property: "og:title", content: "Lesson — Atlas Calisthenics" },
+      { property: "og:description", content: "Technique, common mistakes and prescribed volume." },
+    ],
+  }),
   component: LessonPage,
 });
 
 function LessonPage() {
-  const { lesson } = Route.useLoaderData();
-  const skill = getSkill(lesson.skillId);
-  const next = skill?.pathway.find((p) => p.index === lesson.stepIndex + 1);
+  const { lessonId } = Route.useParams();
+  const { data: dbLesson, isLoading } = useQuery(lessonQuery(lessonId));
+  const { lessons, completed, bySkill } = useSkillProgress();
+  const toggle = useToggleLessonComplete();
 
-  return (
-    <AppShell>
-      <Link
-        to="/skills/$skillId/pathway"
-        params={{ skillId: lesson.skillId }}
-        className="mb-4 inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground"
-      >
-        <ArrowLeft className="size-4" /> {lesson.skillName} Program
-      </Link>
+  const flat = lessons.find((l) => l.id === lessonId);
+  const skillId = dbLesson?.programs?.skill_id ?? flat?.skillId ?? "";
+  const skillName = dbLesson?.programs?.skills?.name ?? flat?.skillName ?? "Skill";
+  const template = getLesson(`${skillId}-step-${dbLesson?.order ?? flat?.order ?? 1}`);
+  const isCompleted = completed.has(lessonId);
 
-      {/* Video area */}
-      {lesson.premium ? (
+  const siblings = (bySkill.get(skillId) ?? []).slice().sort((a, b) => a.order - b.order);
+  const next = siblings.find((l) => l.order === (dbLesson?.order ?? flat?.order ?? 0) + 1);
+
+  const locked = !isLoading && !dbLesson;
+
+  if (locked) {
+    return (
+      <AppShell>
+        <Link
+          to="/skills"
+          className="mb-4 inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground"
+        >
+          <ArrowLeft className="size-4" /> Skills
+        </Link>
         <PremiumLock
           title="This lesson is premium"
           description="Unlock every lesson video, full pathways and progress tracking."
         >
           <VideoArea />
         </PremiumLock>
-      ) : (
-        <VideoArea />
-      )}
+      </AppShell>
+    );
+  }
+
+  return (
+    <AppShell>
+      <Link
+        to="/skills/$skillId/pathway"
+        params={{ skillId }}
+        className="mb-4 inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground"
+      >
+        <ArrowLeft className="size-4" /> {skillName} Program
+      </Link>
+
+      <VideoArea />
 
       <p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">
-        {lesson.skillName} · Step {lesson.stepIndex} · {lesson.duration}
+        {skillName} · Step {dbLesson?.order ?? ""}
+        {dbLesson?.duration ? ` · ${dbLesson.duration} min` : ""}
       </p>
-      <h1 className="text-display mt-1 text-4xl font-bold">{lesson.title}</h1>
+      <h1 className="text-display mt-1 text-4xl font-bold">{dbLesson?.title ?? "Lesson"}</h1>
 
       <SectionTitle>Objective</SectionTitle>
-      <p className="text-sm text-muted-foreground">{lesson.objective}</p>
+      <p className="text-sm text-muted-foreground">{dbLesson?.description ?? template.objective}</p>
 
       <SectionTitle>Prerequisites</SectionTitle>
       <ul className="space-y-2">
-        {lesson.prerequisites.map((p) => (
+        {template.prerequisites.map((p) => (
           <li
             key={p}
             className="flex items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3 text-sm"
@@ -72,7 +89,7 @@ function LessonPage() {
 
       <SectionTitle>Technique</SectionTitle>
       <ol className="space-y-3">
-        {lesson.technique.map((t, i) => (
+        {template.technique.map((t, i) => (
           <li key={t} className="flex gap-3 rounded-xl border border-border bg-surface p-4 text-sm">
             <span className="text-display shrink-0 text-lg font-bold text-primary">{i + 1}</span>
             <span className="text-muted-foreground">{t}</span>
@@ -82,7 +99,7 @@ function LessonPage() {
 
       <SectionTitle>Common mistakes</SectionTitle>
       <ul className="space-y-2">
-        {lesson.mistakes.map((m) => (
+        {template.mistakes.map((m) => (
           <li
             key={m}
             className="flex gap-3 rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-muted-foreground"
@@ -97,17 +114,17 @@ function LessonPage() {
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Regression
           </p>
-          <p className="mt-2 text-sm">{lesson.regression}</p>
+          <p className="mt-2 text-sm">{template.regression}</p>
         </div>
         <div className="surface-card p-5">
           <p className="text-xs font-bold uppercase tracking-widest text-primary">Progression</p>
-          <p className="mt-2 text-sm">{lesson.progression}</p>
+          <p className="mt-2 text-sm">{template.progression}</p>
         </div>
       </div>
 
       <SectionTitle>Prescription</SectionTitle>
       <div className="grid grid-cols-4 gap-2">
-        {lesson.prescription.map((p) => (
+        {template.prescription.map((p) => (
           <div key={p.label} className="surface-card p-3 text-center">
             <p className="text-display text-lg font-bold">{p.value}</p>
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{p.label}</p>
@@ -117,12 +134,16 @@ function LessonPage() {
 
       <SectionTitle>Safety notes</SectionTitle>
       <div className="rounded-xl border border-warning/30 bg-warning/5 p-4 text-sm text-muted-foreground">
-        {lesson.safety}
+        {template.safety}
       </div>
 
       <div className="mt-8 space-y-3">
-        <button className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-primary text-sm font-bold text-primary-foreground shadow-glow">
-          <Check className="size-4" /> Mark Complete
+        <button
+          onClick={() => toggle.mutate({ lessonId, completed: !isCompleted })}
+          disabled={toggle.isPending}
+          className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-primary text-sm font-bold text-primary-foreground shadow-glow disabled:opacity-60"
+        >
+          <Check className="size-4" /> {isCompleted ? "Completed — undo" : "Mark Complete"}
         </button>
         {next ? (
           <Link

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import {
   ArrowLeft,
   BarChart3,
@@ -16,6 +16,19 @@ import { skills } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  beforeLoad: async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth.user) throw redirect({ to: "/login" });
+    const { data: isAdmin } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", auth.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!isAdmin) throw redirect({ to: "/home" });
+  },
+
   head: () => ({
     meta: [
       { title: "Admin Dashboard — Atlas Calisthenics" },
@@ -27,6 +40,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   }),
   component: AdminPage,
 });
+
 
 const sections = [
   { id: "skills", label: "Skills", icon: Dumbbell, count: `${skills.length}` },
