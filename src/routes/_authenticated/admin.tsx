@@ -16,6 +16,15 @@ import { skills } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  beforeLoad: async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data: auth } = await supabase.auth.getUser();
+    const { data: isAdmin } = await supabase.rpc("has_role", {
+      _user_id: auth.user?.id ?? "",
+      _role: "admin",
+    });
+    if (!isAdmin) throw redirect({ to: "/home" });
+  },
   head: () => ({
     meta: [
       { title: "Admin Dashboard — Atlas Calisthenics" },
@@ -27,6 +36,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   }),
   component: AdminPage,
 });
+
 
 const sections = [
   { id: "skills", label: "Skills", icon: Dumbbell, count: `${skills.length}` },
