@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Lock, Trophy } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/app-shell";
-import { achievements } from "@/lib/data";
+import { achievementsQuery } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/achievements")({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/achievements")({
 });
 
 function AchievementsPage() {
+  const { data: achievements = [] } = useQuery(achievementsQuery);
   const earned = achievements.filter((a) => a.earned).length;
 
   return (
@@ -28,10 +30,7 @@ function AchievementsPage() {
       />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {achievements.map((a) => (
-          <div
-            key={a.id}
-            className={cn("surface-card p-4 text-center", !a.earned && "opacity-50")}
-          >
+          <div key={a.id} className={cn("surface-card p-4 text-center", !a.earned && "opacity-50")}>
             <span
               className={cn(
                 "mx-auto grid size-12 place-items-center rounded-full",
@@ -41,7 +40,7 @@ function AchievementsPage() {
               {a.earned ? <Trophy className="size-5" /> : <Lock className="size-5" />}
             </span>
             <p className="text-display mt-3 text-base font-bold">{a.name}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{a.detail}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{a.description}</p>
           </div>
         ))}
       </div>
