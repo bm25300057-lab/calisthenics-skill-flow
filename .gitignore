@@ -30,3 +30,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables (never commit real keys, even the publishable key)
+.env
+.env.*
+!.env.example
