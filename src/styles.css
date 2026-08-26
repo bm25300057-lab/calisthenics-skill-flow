@@ -211,3 +211,13 @@
     transform: none;
   }
 }
+
+/* Native shell (iOS/Android via Capacitor): respect device safe areas. */
+html.native-app body {
+  padding-top: env(safe-area-inset-top);
+}
+
+html.native-app {
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
